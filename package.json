@@ -9,7 +9,12 @@
     "start": "remix-serve ./build/server/index.js",
     "lint": "biome check src",
     "format": "biome format src",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "db-migrate-deploy": "prisma migrate deploy",
+    "db-migrate-dev": "prisma migrate dev",
+    "db-push": "prisma db push",
+    "db-seed": "prisma migrate reset",
+    "db-studio": "prisma studio"
   },
   "dependencies": {
     "@conform-to/react": "^1.0.5",
