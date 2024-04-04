@@ -124,6 +124,12 @@ export default function Page() {
             Continue
           </Button>
         </Box>
+        <Box sx={{ m: 1 }}>
+          <Typography>
+            Create an account <Link to="/signup">here</Link> if you don't have
+            one.
+          </Typography>
+        </Box>
       </Form>
     </Box>
   );
