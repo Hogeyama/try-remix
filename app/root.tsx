@@ -1,3 +1,4 @@
+import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -6,6 +7,12 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+import { MuiDocument } from "~/lib/mui/MuiDocument";
+import { MuiMeta } from "~/lib/mui/MuiMeta";
+import { getMuiLinks } from "~/lib/mui/getMuiLinks";
+
+export const links: LinksFunction = () => [...getMuiLinks()];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -13,6 +20,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
+        <MuiMeta />
         <Links />
       </head>
       <body>
@@ -25,5 +33,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <MuiDocument>
+        <Outlet />
+      </MuiDocument>
+    </>
+  );
 }
