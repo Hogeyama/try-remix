@@ -125,6 +125,7 @@
             in
             {
               processes-dev = {
+                port = 10000;
                 settings.processes = {
                   inherit postgres dev;
                 };
