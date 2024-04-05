@@ -52,6 +52,67 @@
                 name = "dev";
                 help = "Run dev server and postgres";
                 command = ''nix run .#processes-dev -- "$@"'';
+                category = "[development]";
+              }
+              {
+                name = "format";
+                help = "Apply formatting";
+                command = ''biome format app --write && prisma format'';
+                category = "[development]";
+              }
+              {
+                name = "lint";
+                help = "Run lint";
+                command = ''biome lint app'';
+                category = "[development]";
+              }
+              {
+                name = "check";
+                help = "Lint, check format and type";
+                command = ''biome check app && yarn tsc'';
+                category = "[development]";
+              }
+              {
+                name = "check-apply";
+                help = "Apply fix for `check`";
+                command = ''biome check app --apply'';
+                category = "[development]";
+              }
+              {
+                name = "prisma-migrate-dev";
+                help = "Run `prisma migrate dev`";
+                command = ''prisma migrate dev "$@"'';
+                category = "[development]";
+              }
+              {
+                name = "prisma-migrate-reset";
+                help = "Run `prisma migrate reset`";
+                command = ''prisma migrate reset "$@"'';
+                category = "[development]";
+              }
+              {
+                name = "prisma-studio";
+                help = "Run `prisma studio`";
+                command = ''prisma studio "$@"'';
+                category = "[development]";
+              }
+              {
+                name = "build";
+                help = "Build for production";
+                command = ''yarn remix vite:build'';
+                category = "[production]";
+              }
+              {
+                name = "start";
+                help = "Start production serzlkrver";
+                command = ''yarn remix-serve ./build/server/index.js'';
+                category = "[production]";
+              }
+              {
+                name = "prisma-migrate-prod";
+                help = "Run `prisma migrate deploy`";
+                command = ''prisma migrate deploy "$@"'';
+                category = "[production]";
               }
             ];
             env = [
@@ -120,7 +181,7 @@
                 };
               };
               dev = {
-                command = "yarn run dev";
+                command = "yarn remix vite:dev";
               };
             in
             {
