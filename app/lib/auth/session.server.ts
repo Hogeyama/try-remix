@@ -44,6 +44,7 @@ export const getSession = async (
   const hostHeader = request.headers.get("Host");
   if (
     process.env.NODE_ENV === "production" &&
+    !hostHeader?.startsWith("localhost:") &&
     (!originHeader ||
       !hostHeader ||
       !verifyRequestOrigin(originHeader, [hostHeader]))
