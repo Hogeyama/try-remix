@@ -79,6 +79,12 @@
                 category = "[development]";
               }
               {
+                name = "vitest";
+                help = "Run vitest";
+                command = ''yarn vitest "$@"'';
+                category = "[development]";
+              }
+              {
                 name = "prisma-migrate-dev";
                 help = "Run `prisma migrate dev`";
                 command = ''prisma migrate dev "$@"'';
