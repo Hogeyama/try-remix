@@ -1,13 +1,11 @@
-import { exec, type ExecException } from "node:child_process";
+import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { createServer, type AddressInfo } from "node:net";
 
 export default async function () {
   const port = await getFreePort();
-  await startProcessCompose(port);
+  const pc = await startProcessCompose(port);
   return async () => {
-    // なぜかSIGTERMが飛んでしまう。stopProcessCompose参照
-    process.on("SIGTERM", async () => {});
-    stopProcessCompose(port);
+    shutdownProcessCompose(pc.process);
   };
 }
 
@@ -25,27 +23,53 @@ function getFreePort(): Promise<number> {
   });
 }
 
-async function startProcessCompose(pcPort: number) {
-  let pcError: ExecException | null = null;
+async function startProcessCompose(pcPort: number): Promise<{
+  process: ChildProcessWithoutNullStreams;
+  exitCode: number | null;
+  output: string;
+}> {
   console.log("Starting Postgres...");
-  exec(
-    `nix run '.#processes-dev' -- --port ${pcPort} run postgres`,
-    (error) => {
-      if (error) {
-        pcError = error;
-      }
-    },
+  const process = spawn(
+    "nix",
+    ["run", ".#processes-dev", "--", "--port", `${pcPort}`, "run", "postgres"],
+    // detachedで独立したプロセスグループにしておく。
+    // （process-compose-flakeがprocess-composeをラップしているので
+    // 　process-composeだけに直接シグナルを送ることができないため、
+    // 　独立したプロセスグループにしてグループ全体にシグナルを送る）
+    { detached: true },
   );
+
+  const pcState = {
+    process,
+    exitCode: null as number | null,
+    output: "" as string,
+  };
+
+  pcState.process.on("exit", (code) => {
+    if (code !== null) {
+      console.log(`process-compose exited with code ${code}`);
+      pcState.exitCode = code;
+    }
+  });
+  pcState.process.stdout?.on("data", (data) => {
+    pcState.output += data;
+  });
+  pcState.process.stderr?.on("data", (data) => {
+    pcState.output += data;
+  });
 
   // wait for Postgres to start
   for (let i = 0; i < 10; i++) {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    if (await isPostgresReady(pcPort)) {
-      return;
-    }
-    if (pcError) {
-      console.error(pcError);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    if (pcState.exitCode !== null) {
+      console.error(pcState.output);
       break;
+    }
+    if (await isPostgresReady(pcPort)) {
+      console.log("Postgres started.");
+      if (pcState.process !== null) {
+        return pcState;
+      }
     }
   }
 
@@ -53,19 +77,10 @@ async function startProcessCompose(pcPort: number) {
   console.error("Failed to start Postgres. Shutting down...");
   console.error("HINT: try `pkill process-compose` to clean up");
   try {
-    shutdownProcessCompose(pcPort);
+    shutdownProcessCompose(pcState.process);
   } catch (_) {}
   console.log("Done.");
   throw new Error("Failed to start Postgres.");
-}
-
-async function stopProcessCompose(pcPort: number) {
-  console.log("Stoping Postgres...");
-  if (await shutdownProcessCompose(pcPort)) {
-    console.log("Postgres stopped.");
-  } else {
-    console.error("Failed to stop Postgres");
-  }
 }
 
 async function isPostgresReady(pcPort: number): Promise<boolean> {
@@ -85,21 +100,8 @@ async function isPostgresReady(pcPort: number): Promise<boolean> {
   return false;
 }
 
-// NOTE: process-compose-flakeがexecを使ってないのでSIGINTを送ることはできない。
-// FIXME: なぜかこれを呼ぶとvitestにSIGTERMが飛ぶ
-async function shutdownProcessCompose(pcPort: number) {
-  try {
-    const resp = await fetch(
-      new Request(`http://localhost:${pcPort}/project/stop`, {
-        method: "POST",
-      }),
-    );
-    return resp.ok;
-  } catch (error) {
-    // ignore connection refused errors (server already down)
-    // biome-ignore lint/suspicious/noExplicitAny: 許せ
-    if ((error as any)?.cause?.code !== "ECONNREFUSED") {
-      throw error;
-    }
+async function shutdownProcessCompose(pc: ChildProcessWithoutNullStreams) {
+  if (pc.pid) {
+    process.kill(-pc.pid, "SIGTERM");
   }
 }
