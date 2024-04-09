@@ -5,6 +5,7 @@ import {
   useForm,
 } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
+import { Prisma } from "@prisma/client";
 import {
   type ActionFunctionArgs,
   type TypedResponse,
@@ -12,13 +13,11 @@ import {
   redirect,
 } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
+import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { z } from "zod";
 
-import { Box, Button, TextField, Typography } from "@mui/material";
-
-import { Prisma } from "@prisma/client";
-import { generateId } from "lucia";
+import { PasswordInput, UsernameInput } from "~/lib/auth/components";
 import { password, username } from "~/lib/auth/schema";
 import { lucia } from "~/lib/auth/session.server";
 import { prisma } from "~/lib/db";
@@ -87,38 +86,35 @@ export default function Page() {
   });
 
   return (
-    <Box sx={{ m: 2 }}>
-      <h1>Create an account</h1>
-      <Form method="post" {...getFormProps(form)}>
-        <Box sx={{ m: 1 }}>
-          <TextField
-            label="Username"
-            variant="outlined"
-            {...getInputProps(username, { type: "text" })}
-            error={(username.errors?.length ?? 0) > 0}
-            helperText={username.errors?.join(",")}
+    <div className="m-2">
+      <h1 className="text-xl font-bold">Signup</h1>
+      <div className="ml-3">
+        <Form method="post" {...getFormProps(form)}>
+          <UsernameInput
+            className="my-3"
+            inputAttrs={getInputProps(username, { type: "text" })}
+            error={username.errors?.join(",")}
           />
-        </Box>
-        <Box sx={{ m: 1 }}>
-          <TextField
-            label="Password"
-            variant="outlined"
-            {...getInputProps(password, { type: "password" })}
-            error={(password.errors?.length ?? 0) > 0}
-            helperText={password.errors?.join(",")}
+          <PasswordInput
+            className="my-3"
+            inputAttrs={getInputProps(password, { type: "password" })}
+            error={password.errors?.join(",")}
           />
-        </Box>
-        <Box sx={{ m: 1 }}>
-          {(form.errors?.length ?? 0) > 0 && (
-            <Typography color="error">{form.errors?.join(",")}</Typography>
-          )}
-        </Box>
-        <Box sx={{ m: 1 }}>
-          <Button type="submit" variant="outlined">
-            Continue
-          </Button>
-        </Box>
-      </Form>
-    </Box>
+          <div className="flex items-center my-3">
+            <button type="submit" className="btn mr-2">
+              CREATE ACCOUNT
+            </button>
+            <span className="text-error text-lg">{form.errors?.join(",")}</span>
+          </div>
+          <div className="m-2">
+            Do you have an account?{" "}
+            <a href="/login" className="link">
+              Login
+            </a>{" "}
+            here.
+          </div>
+        </Form>
+      </div>
+    </div>
   );
 }

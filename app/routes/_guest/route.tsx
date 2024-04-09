@@ -1,34 +1,36 @@
-import {
-  AppBar,
-  Box,
-  Container,
-  Toolbar,
-  Typography,
-  styled,
-} from "@mui/material";
-import { Outlet } from "@remix-run/react";
-
-const appBarHeight = 64;
-
-const AppBar_ = styled(AppBar)(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  height: appBarHeight,
-}));
+import { Link, Outlet } from "@remix-run/react";
+import clsx, { type ClassValue } from "clsx";
 
 export default function Mui() {
+  const appBarHeight = ["h-16", "lg:h-20"];
+  const contentsPadding = ["pt-16", "lg:pt-20"];
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar_ position="fixed">
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            サンプル
-          </Typography>
-        </Toolbar>
-      </AppBar_>
-      <Container component="main">
-        <Toolbar />
-        <Outlet />
-      </Container>
-    </Box>
+    <div>
+      <AppBar classes={[appBarHeight]} />
+      <div
+        className={clsx(
+          ["flex", "flex-row"],
+          ["ml-10", "md:ml-12", "lg:ml-16", "xl:ml-20", "2xl:ml-24"],
+          ["mt-5", "md:mt-6", "lg:mt-8", "xl:mt-10", "2xl:mt-12"],
+        )}
+      >
+        <main className={clsx("grow", contentsPadding)}>
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 }
+
+const AppBar = ({ classes }: { classes?: ClassValue[] }) => (
+  <div
+    className={clsx(
+      "navbar absolute top-0 bg-neutral text-neutral-content shadow-md py-0",
+      classes,
+    )}
+  >
+    <Link to="/" className="btn btn-ghost text-xl shadow">
+      サンプル
+    </Link>
+  </div>
+);

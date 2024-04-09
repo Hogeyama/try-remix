@@ -1,4 +1,3 @@
-import { Box, Button } from "@mui/material";
 import {
   type ActionFunctionArgs,
   type TypedResponse,
@@ -29,16 +28,16 @@ export const action = async ({
 export default function Page() {
   const error = useActionData<typeof action>()?.error;
   return (
-    <Box sx={{ m: 2 }}>
+    <div className="m-4">
       {error ? (
         <p>{error}</p>
       ) : (
-        <Form method="post" action="">
-          <Button type="submit" variant="outlined">
-            Log out
-          </Button>
+        <Form method="post">
+          <button type="submit" className="btn btn-primary mr-2">
+            LOG OUT
+          </button>
         </Form>
       )}
-    </Box>
+    </div>
   );
 }
