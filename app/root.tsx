@@ -10,8 +10,12 @@ import {
 import { MuiDocument } from "~/lib/mui/MuiDocument";
 import { MuiMeta } from "~/lib/mui/MuiMeta";
 import { getMuiLinks } from "~/lib/mui/getMuiLinks";
+import stylesheet from "~/tailwind.css?url";
 
-export const links: LinksFunction = () => [...getMuiLinks()];
+export const links: LinksFunction = () => [
+  ...getMuiLinks(),
+  { rel: "stylesheet", href: stylesheet },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
