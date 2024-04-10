@@ -35,41 +35,30 @@ const NavBar: React.FC<{
   classes?: ClassValue[];
 }> = ({ navGroups, classes }) => {
   const { pathname } = useLocation();
+  const style = {
+    container: clsx([
+      ["bg-base-200"],
+      ["shadow-md", "h-screen"],
+      ["w-40", "md:w-48", "lg:w-64"],
+      classes,
+    ]),
+    menu: clsx("menu", ["menu-sm", "md:menu-md", "lg:menu-lg", "xl:menu-xl"]),
+    menuTitle: clsx(
+      ["menu-title text-base-content"],
+      ["text-sm", "md:text-md", "lg:text-lg"],
+    ),
+    link: (link: string) => (pathname === link ? "active" : ""),
+  };
   return (
-    <div
-      className={clsx(
-        ["bg-base-200"],
-        ["shadow-md", "h-screen"],
-        ["w-40", "md:w-48", "lg:w-64"],
-        classes,
-      )}
-    >
+    <div className={style.container}>
       {navGroups.map((navGroup, i) => (
         <div key={navGroup.id}>
           {i > 0 && <div className="divider" />}
-          <ul
-            className={clsx("menu", [
-              "menu-sm",
-              "md:menu-md",
-              "lg:menu-lg",
-              "xl:menu-xl",
-            ])}
-          >
-            <li
-              className={clsx("menu-title text-base-content", [
-                "text-sm",
-                "md:text-md",
-                "lg:text-lg",
-              ])}
-            >
-              {navGroup.id}
-            </li>
+          <ul className={style.menu}>
+            <li className={style.menuTitle}>{navGroup.id}</li>
             {navGroup.items.map((item) => (
               <li key={item.link}>
-                <Link
-                  to={item.link}
-                  className={clsx(pathname === item.link ? "active" : "")}
-                >
+                <Link to={item.link} className={style.link(item.link)}>
                   <Icon />
                   {item.text}
                 </Link>
