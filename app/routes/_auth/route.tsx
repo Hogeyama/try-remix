@@ -1,12 +1,22 @@
-import { Link, Outlet, useLocation } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import clsx, { type ClassValue } from "clsx";
+import type { User } from "lucia";
+import type React from "react";
+import { getSessionOrRedirect } from "~/lib/auth/session.server";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const [json, { user }] = await getSessionOrRedirect(request);
+  return json({ user });
+};
 
 export default function Page() {
+  const { user } = useLoaderData<typeof loader>();
   const appBarHeight = ["h-16", "lg:h-20"];
   const contentsPadding = ["pt-16", "lg:pt-20"];
   return (
     <div>
-      <AppBar classes={["z-10", appBarHeight]} />
+      <AppBar user={user} classes={["z-10", appBarHeight]} />
       <div className="absolute flex flex-row w-full">
         <NavBar navGroups={navGroups} classes={["relative", contentsPadding]} />
         <main className={clsx("grow", contentsPadding)}>
@@ -17,7 +27,7 @@ export default function Page() {
   );
 }
 
-const AppBar = ({ classes }: { classes?: ClassValue[] }) => (
+const AppBar = ({ user, classes }: { user: User; classes?: ClassValue[] }) => (
   <div
     className={clsx(
       "navbar absolute top-0 bg-neutral text-neutral-content shadow-md",
@@ -27,6 +37,10 @@ const AppBar = ({ classes }: { classes?: ClassValue[] }) => (
     <Link to="/" className="btn btn-ghost text-xl shadow">
       サンプル
     </Link>
+    <div className="flex-grow" />
+    <div className="flex-initial text-nowrap">
+      <div className="btn btn-ghost">Logined as {user.username}</div>
+    </div>
   </div>
 );
 
