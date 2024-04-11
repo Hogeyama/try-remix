@@ -1,5 +1,7 @@
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { PrismaClient } from "@prisma/client";
+import { type TypedResponse, json } from "@remix-run/node";
+import { redirect } from "@remix-run/react";
 import { Lucia, type Session, type User, verifyRequestOrigin } from "lucia";
 
 const client = new PrismaClient();
@@ -18,6 +20,13 @@ export const lucia = new Lucia(adapter, {
     };
   },
 });
+
+declare module "lucia" {
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
+}
 
 interface DatabaseUserAttributes {
   username: string;
@@ -76,9 +85,55 @@ export const getSession = async (
   return Object.assign(result, { freshCookieIfNeeded });
 };
 
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: DatabaseUserAttributes;
+export const getSessionOrRedirect = async (
+  request: Request,
+): Promise<
+  [
+    <T>(val: T, init?: ResponseInit) => TypedResponse<T>,
+    { user: User; session: Session },
+  ]
+> => {
+  const result = await getSession(request);
+  if (result.error) {
+    throw redirect("/login");
   }
+  return [jsonWithExtraHeaders(result.freshCookieIfNeeded), result];
+};
+
+const jsonWithExtraHeaders: <T>(
+  h: HeadersInit,
+) => (val: T, init?: ResponseInit) => TypedResponse<T> =
+  (h) => (val, init?: ResponseInit) => {
+    return json(
+      val,
+      Object.assign({}, init, {
+        headers: init?.headers ? mergeHeaders(init?.headers, h) : h,
+      }),
+    );
+  };
+
+function mergeHeaders(h1: HeadersInit, h2: HeadersInit): HeadersInit {
+  const toHeaders = (h: HeadersInit) => {
+    if (h instanceof Headers) {
+      return h;
+    }
+    if (Array.isArray(h)) {
+      const headers = new Headers();
+      for (const [key, value] of h) {
+        headers.append(key, value);
+      }
+      return headers;
+    }
+    return new Headers(h);
+  };
+
+  const mergedHeaders = new Headers();
+  toHeaders(h1).forEach((value, key) => {
+    mergedHeaders.set(key, value);
+  });
+  toHeaders(h2).forEach((value, key) => {
+    mergedHeaders.set(key, value);
+  });
+
+  return mergedHeaders;
 }
