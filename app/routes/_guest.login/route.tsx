@@ -17,7 +17,7 @@ import { z } from "zod";
 
 import { PasswordInput, UsernameInput } from "~/lib/auth/components";
 import { password, username } from "~/lib/auth/schema";
-import { lucia } from "~/lib/auth/session.server";
+import { getSession, lucia } from "~/lib/auth/session.server";
 import { prisma } from "~/lib/db";
 
 const schema = z.object({
@@ -69,6 +69,12 @@ export const action = async ({
         formErrors: ["Incorrect username or password"],
       }),
     );
+  }
+
+  // delete old sessions
+  const { session: oldSession } = await getSession(request);
+  if (oldSession) {
+    await lucia.invalidateSession(oldSession.id);
   }
 
   const session = await lucia.createSession(existingUser.id, {});
