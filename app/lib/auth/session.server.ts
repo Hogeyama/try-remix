@@ -87,8 +87,18 @@ export const getSession = async (
 
 export const getSessionOrRedirect = async (
   request: Request,
+): Promise<{ user: User; session: Session }> => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, result] = await getSessionOrRedirectForAction(request);
+  return result;
+};
+
+export const getSessionOrRedirectForAction = async (
+  request: Request,
 ): Promise<
   [
+    // A variant of json that adds the fresh cookie if needed.
+    // NOTE: Do not use this in loader. See https://remix.run/docs/en/main/guides/gotchas#writing-to-sessions-in-loaders
     <T>(val: T, init?: ResponseInit) => TypedResponse<T>,
     { user: User; session: Session },
   ]

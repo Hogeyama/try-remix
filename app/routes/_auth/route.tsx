@@ -8,7 +8,13 @@ import {
   UserIcon,
 } from "@heroicons/react/16/solid";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import {
+  Link,
+  Outlet,
+  json,
+  useLoaderData,
+  useLocation,
+} from "@remix-run/react";
 import clsx, { type ClassValue } from "clsx";
 import type { User } from "lucia";
 import type React from "react";
@@ -16,7 +22,7 @@ import type React from "react";
 import { getSessionOrRedirect } from "~/lib/auth/session.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const [json, { user, session }] = await getSessionOrRedirect(request);
+  const { user, session } = await getSessionOrRedirect(request);
   return json({ user, session });
 };
 
