@@ -5,6 +5,7 @@ import {
   ArrowLeftStartOnRectangleIcon,
   ArrowRightEndOnRectangleIcon,
   UserPlusIcon,
+  UserIcon,
 } from "@heroicons/react/16/solid";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
@@ -45,8 +46,9 @@ const AppBar = ({ user, classes }: { user: User; classes?: ClassValue[] }) => (
       サンプル
     </Link>
     <div className="flex-grow" />
-    <div className="flex-initial text-nowrap">
-      <div className="btn btn-ghost">Logined as {user.username}</div>
+    <div className="flex-initial text-nowrap text-neutral-content">
+      <UserIcon title="user" className="w-6 h-6" />
+      {user.username}
     </div>
   </div>
 );
