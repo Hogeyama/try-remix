@@ -43,7 +43,6 @@
             packages = [
               pkgs.yarn
               pkgs.nodejs
-              pkgs.biome
               pkgs.nodePackages.prisma
               pkgs.playwright-driver.browsers
             ];
@@ -57,25 +56,19 @@
               {
                 name = "format";
                 help = "Apply formatting";
-                command = ''biome format app --write && prisma format'';
+                command = ''yarn prettier --write . && prisma format'';
                 category = "[development]";
               }
               {
                 name = "lint";
                 help = "Run lint";
-                command = ''biome lint app'';
+                command = ''yarn eslint --cache --cache-location ./node_modules/.cache/eslint .'';
                 category = "[development]";
               }
               {
-                name = "check";
-                help = "Lint, check format and type";
-                command = ''biome check app && yarn tsc'';
-                category = "[development]";
-              }
-              {
-                name = "check-apply";
-                help = "Apply fix for `check`";
-                command = ''biome check app --apply'';
+                name = "lint-fix";
+                help = "Apply fix for `lint`";
+                command = ''yarn eslint --cache --cache-location ./node_modules/.cache/eslint . --fix'';
                 category = "[development]";
               }
               {
