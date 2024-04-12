@@ -20,9 +20,7 @@ export default function Page() {
       <AppBar user={user} classes={["z-10", appBarHeight]} />
       <div className="absolute flex flex-row w-full">
         <NavBar navGroups={navGroups} classes={["relative", contentsPadding]} />
-        <main className={clsx("grow", contentsPadding)}>
-          <Outlet />
-        </main>
+        <Main classes={contentsPadding} />
       </div>
     </div>
   );
@@ -45,6 +43,14 @@ const AppBar = ({ user, classes }: { user: User; classes?: ClassValue[] }) => (
   </div>
 );
 
+const Main: React.FC<{ classes: ClassValue[] }> = ({ classes }) => {
+  return (
+    <main className={clsx("grow", "h-screen", "overflow-auto", classes)}>
+      <Outlet />
+    </main>
+  );
+};
+
 const NavBar: React.FC<{
   navGroups: NavGroup[];
   classes?: ClassValue[];
@@ -53,8 +59,9 @@ const NavBar: React.FC<{
   const style = {
     container: clsx([
       ["bg-base-200"],
-      ["shadow-md", "h-screen"],
+      ["shadow-md", "h-screen", "overflow-auto"],
       ["w-40", "md:w-48", "lg:w-64"],
+      ["flex-none"],
       classes,
     ]),
     menu: clsx("menu", ["menu-sm", "md:menu-md", "lg:menu-lg", "xl:menu-xl"]),
