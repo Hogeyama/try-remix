@@ -120,8 +120,8 @@ const navGroups: NavGroup[] = [
     id: "メニュー",
     items: [
       { text: "About", icon: <Icon />, link: "/about" },
-      { text: "検索", icon: <Icon />, link: "/about" },
-      { text: "設定", icon: <Icon />, link: "/about" },
+      { text: "検索", icon: <Icon />, link: "/search" },
+      { text: "設定", icon: <Icon />, link: "/config" },
     ],
   },
   {
