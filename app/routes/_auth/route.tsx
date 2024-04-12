@@ -7,8 +7,8 @@ import type React from "react";
 import { getSessionOrRedirect } from "~/lib/auth/session.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const [json, { user }] = await getSessionOrRedirect(request);
-  return json({ user });
+  const [json, { user, session }] = await getSessionOrRedirect(request);
+  return json({ user, session });
 };
 
 export default function Page() {

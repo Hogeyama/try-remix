@@ -1,7 +1,6 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/node";
 
-import { getSessionOrRedirect } from "~/lib/auth/session.server";
+import { useUserSession } from "../_auth/lib";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,13 +9,8 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const [json, { user }] = await getSessionOrRedirect(request);
-  return json({ user });
-};
-
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user } = useUserSession();
   return (
     <div className="m-4">
       <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
