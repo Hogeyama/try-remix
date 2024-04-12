@@ -103,7 +103,7 @@
               }
               {
                 name = "start";
-                help = "Start production serzlkrver";
+                help = "Start production server";
                 command = ''yarn remix-serve ./build/server/index.js'';
                 category = "[production]";
               }
