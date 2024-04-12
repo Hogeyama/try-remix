@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 
-import { useUserSession } from "../_auth/lib";
+import { useUserSession } from "../_auth._lib";
 
 export const meta: MetaFunction = () => {
   return [
