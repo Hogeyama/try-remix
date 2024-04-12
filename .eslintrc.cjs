@@ -5,6 +5,7 @@
 module.exports = {
   root: true,
   parserOptions: {
+    project: true,
     ecmaVersion: "latest",
     sourceType: "module",
     ecmaFeatures: {
@@ -24,7 +25,7 @@ module.exports = {
     // React
     {
       files: ["**/*.{js,jsx,ts,tsx}"],
-      plugins: ["react", "jsx-a11y"],
+      plugins: ["react", "jsx-a11y", "import-access"],
       extends: [
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
@@ -47,6 +48,7 @@ module.exports = {
           "warn",
           { validStrategies: ["ternary"] },
         ],
+        "import-access/jsdoc": ["error"],
         "react/prop-types": "off",
       },
     },

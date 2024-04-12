@@ -25,6 +25,11 @@
     "paths": {
       "~/*": ["./app/*"]
     },
+    "plugins": [
+      {
+        "name": "eslint-plugin-import-access"
+      }
+    ],
     // Vite takes care of building everything, not tsc.
     "noEmit": true
   }
