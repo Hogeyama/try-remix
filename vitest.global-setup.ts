@@ -34,8 +34,8 @@ async function startProcessCompose(pcPort: number): Promise<{
     ["run", ".#processes-dev", "--", "--port", `${pcPort}`, "run", "postgres"],
     // detachedで独立したプロセスグループにしておく。
     // （process-compose-flakeがprocess-composeをラップしているので
-    // 　process-composeだけに直接シグナルを送ることができないため、
-    // 　独立したプロセスグループにしてグループ全体にシグナルを送る）
+    //   process-composeだけに直接シグナルを送ることができないため、
+    //   独立したプロセスグループにしてグループ全体にシグナルを送る）
     { detached: true },
   );
 
@@ -78,7 +78,9 @@ async function startProcessCompose(pcPort: number): Promise<{
   console.error("HINT: try `pkill process-compose` to clean up");
   try {
     shutdownProcessCompose(pcState.process);
-  } catch (_) {}
+  } catch (_) {
+    // just ignore
+  }
   console.log("Done.");
   throw new Error("Failed to start Postgres.");
 }
@@ -92,8 +94,13 @@ async function isPostgresReady(pcPort: number): Promise<boolean> {
     }
   } catch (error) {
     // ignore connection refused errors (server not ready yet)
-    // biome-ignore lint/suspicious/noExplicitAny: 許せ
-    if ((error as any)?.cause?.code !== "ECONNREFUSED") {
+    if (
+      error instanceof Error &&
+      typeof error.cause === "object" &&
+      error.cause != null &&
+      "code" in error.cause &&
+      error?.cause.code === "ECONNREFUSED"
+    ) {
       throw error;
     }
   }

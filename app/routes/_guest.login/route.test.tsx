@@ -21,11 +21,11 @@ describe("/login", () => {
         expect(
           screen.getByLabelText("Username", { selector: "input" }),
         ).toBeVisible();
-        expect(
-          screen.getByLabelText("Password", { selector: "input" }),
-        ).toBeVisible();
-        expect(screen.getByRole("button", { name: /continue/i })).toBeVisible;
       });
+      expect(
+        screen.getByLabelText("Password", { selector: "input" }),
+      ).toBeVisible();
+      expect(screen.getByRole("button", { name: /continue/i })).toBeVisible;
     });
   });
 

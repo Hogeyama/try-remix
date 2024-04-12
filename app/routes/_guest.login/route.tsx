@@ -123,7 +123,7 @@ export default function Page() {
             <Link className="underline" to="/signup">
               here
             </Link>{" "}
-            if you don't have one.
+            if you don&apos;t have one.
           </div>
         </Form>
       </div>
