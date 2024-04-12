@@ -41,7 +41,7 @@ const Input: React.FC<{
           {icon}
           <input type="text" {...inputAttrs} />
         </label>
-        {error && <span className="text-error">{error}</span>}
+        {error ? <span className="text-error">{error}</span> : null}
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 import { createRemixStub } from "@remix-run/testing";
 import { render, screen, waitFor } from "@testing-library/react";
+import { Argon2id } from "oslo/password";
 import { beforeEach, describe, expect, test } from "vitest";
 
-import { Argon2id } from "oslo/password";
 import { prisma } from "~/lib/db";
+
 import Component, { action } from "./route";
 
 describe("/login", () => {

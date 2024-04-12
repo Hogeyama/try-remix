@@ -3,6 +3,7 @@ import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import clsx, { type ClassValue } from "clsx";
 import type { User } from "lucia";
 import type React from "react";
+
 import { getSessionOrRedirect } from "~/lib/auth/session.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -67,7 +68,7 @@ const NavBar: React.FC<{
     <div className={style.container}>
       {navGroups.map((navGroup, i) => (
         <div key={navGroup.id}>
-          {i > 0 && <div className="divider" />}
+          {i > 0 ? <div className="divider" /> : null}
           <ul className={style.menu}>
             <li className={style.menuTitle}>{navGroup.id}</li>
             {navGroup.items.map((item) => (
@@ -85,16 +86,16 @@ const NavBar: React.FC<{
   );
 };
 
-type NavItem = {
+interface NavItem {
   text: string;
   icon: React.ReactNode;
   link: string;
-};
+}
 
-type NavGroup = {
+interface NavGroup {
   id: string;
   items: NavItem[];
-};
+}
 
 const Icon = () => (
   <svg
