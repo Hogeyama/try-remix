@@ -1,3 +1,11 @@
+import {
+  MagnifyingGlassIcon,
+  Cog6ToothIcon,
+  InformationCircleIcon,
+  ArrowLeftStartOnRectangleIcon,
+  ArrowRightEndOnRectangleIcon,
+  UserPlusIcon,
+} from "@heroicons/react/16/solid";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import clsx, { type ClassValue } from "clsx";
@@ -81,7 +89,7 @@ const NavBar: React.FC<{
             {navGroup.items.map((item) => (
               <li key={item.link}>
                 <Link to={item.link} className={style.link(item.link)}>
-                  <Icon />
+                  <span>{item.icon}</span>
                   {item.text}
                 </Link>
               </li>
@@ -104,39 +112,51 @@ interface NavGroup {
   items: NavItem[];
 }
 
-const Icon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <title>Logo</title>
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-    />
-  </svg>
-);
+const iconStyle = "w-4 h-4";
 
 const navGroups: NavGroup[] = [
   {
     id: "メニュー",
     items: [
-      { text: "About", icon: <Icon />, link: "/about" },
-      { text: "検索", icon: <Icon />, link: "/search" },
-      { text: "設定", icon: <Icon />, link: "/config" },
+      {
+        text: "About",
+        icon: <InformationCircleIcon title="about" className={iconStyle} />,
+        link: "/about",
+      },
+      {
+        text: "検索",
+        icon: <MagnifyingGlassIcon title="search" className={iconStyle} />,
+        link: "/search",
+      },
+      {
+        text: "設定",
+        icon: <Cog6ToothIcon title="config" className={iconStyle} />,
+        link: "/config",
+      },
     ],
   },
   {
     id: "アカウント",
     items: [
-      { text: "ログイン", icon: <Icon />, link: "/login" },
-      { text: "ログアウト", icon: <Icon />, link: "/logout" },
-      { text: "サインアップ", icon: <Icon />, link: "/signup" },
+      {
+        text: "ログイン",
+        icon: (
+          <ArrowRightEndOnRectangleIcon title="login" className={iconStyle} />
+        ),
+        link: "/login",
+      },
+      {
+        text: "ログアウト",
+        icon: (
+          <ArrowLeftStartOnRectangleIcon title="logout" className={iconStyle} />
+        ),
+        link: "/logout",
+      },
+      {
+        text: "サインアップ",
+        icon: <UserPlusIcon title="signup" className={iconStyle} />,
+        link: "/signup",
+      },
     ],
   },
 ];
