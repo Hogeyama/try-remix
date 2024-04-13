@@ -7,3 +7,6 @@ node_modules
 
 # postgres
 /.data
+
+# for local secrets
+.env

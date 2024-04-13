@@ -143,6 +143,10 @@
                 name = "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD";
                 value = "true";
               }
+              {
+                name = "DATABASE_URL";
+                value = "postgresql://postgres@localhost:5432/app-db";
+              }
             ];
           };
 
