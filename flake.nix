@@ -162,7 +162,7 @@
                     PGDATA=''${PRJ_DATA_DIR}/postgres
                     if ! [[ -e "$PGDATA/PG_VERSION" ]]; then
                         mkdir -p "$PGDATA"
-                        initdb -U postgres -D "$PGDATA" -A trust
+                        initdb -U postgres -D "$PGDATA" --locale=C --encoding=UTF8 -A trust
                     fi
                     postgres -D "$PGDATA" -k "$PGDATA" -p ${toString pg_port}
                   '';
