@@ -10,12 +10,7 @@
   };
 
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      flake-parts,
-      ...
-    }:
+    inputs@{ self, nixpkgs, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         inputs.flake-root.flakeModule
@@ -27,14 +22,13 @@
         "aarch64-linux"
       ];
       perSystem =
-        {
-          config,
-          lib,
-          self',
-          inputs',
-          pkgs,
-          system,
-          ...
+        { config
+        , lib
+        , self'
+        , inputs'
+        , pkgs
+        , system
+        , ...
         }:
         {
           _module.args.pkgs = import inputs.nixpkgs { inherit system; };
