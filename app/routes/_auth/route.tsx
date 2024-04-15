@@ -15,7 +15,7 @@ import {
   useLoaderData,
   useLocation,
 } from "@remix-run/react";
-import clsx, { type ClassValue } from "clsx";
+import clsx from "clsx";
 import type { User } from "lucia";
 import type React from "react";
 import { useCallback } from "react";
@@ -29,24 +29,25 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Page() {
   const { user } = useLoaderData<typeof loader>();
-  const appBarHeight = ["h-16", "lg:h-20"];
-  const contentsPadding = ["pt-16", "lg:pt-20"];
   return (
     <div>
-      <AppBar user={user} classes={["z-10", appBarHeight]} />
+      <AppBar user={user} className={clsx(["z-10", ["h-16", "lg:h-20"]])} />
       <div className="absolute flex flex-row w-full">
-        <NavBar navGroups={navGroups} classes={["relative", contentsPadding]} />
-        <Main classes={contentsPadding} />
+        <NavBar
+          navGroups={navGroups}
+          className={clsx(["relative", ["pt-16", "lg:pt-20"]])}
+        />
+        <Main className={clsx(["pt-16", "lg:pt-20"])} />
       </div>
     </div>
   );
 }
 
-const AppBar = ({ user, classes }: { user: User; classes?: ClassValue[] }) => (
+const AppBar = ({ user, className }: { user: User; className?: string }) => (
   <div
     className={clsx(
       "navbar absolute top-0 bg-neutral text-neutral-content shadow-md",
-      classes,
+      className,
     )}
   >
     <Link to="/" className="btn btn-ghost text-xl shadow">
@@ -60,9 +61,9 @@ const AppBar = ({ user, classes }: { user: User; classes?: ClassValue[] }) => (
   </div>
 );
 
-const Main: React.FC<{ classes: ClassValue[] }> = ({ classes }) => {
+const Main: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <main className={clsx("grow", "h-screen", "overflow-auto", classes)}>
+    <main className={clsx("grow", "h-screen", "overflow-auto", className)}>
       <Outlet />
     </main>
   );
@@ -70,8 +71,8 @@ const Main: React.FC<{ classes: ClassValue[] }> = ({ classes }) => {
 
 const NavBar: React.FC<{
   navGroups: NavGroup[];
-  classes?: ClassValue[];
-}> = ({ navGroups, classes }) => {
+  className?: string;
+}> = ({ navGroups, className }) => {
   const { pathname } = useLocation();
   const isItemActive = useCallback(
     (item: NavItem) => item.link === pathname,
@@ -84,7 +85,7 @@ const NavBar: React.FC<{
         ["shadow-md", "h-screen", "overflow-auto"],
         ["w-40", "md:w-48", "lg:w-64"],
         ["flex-none"],
-        classes,
+        className,
       ])}
     >
       {navGroups.map((navGroup, i) => (
@@ -105,10 +106,10 @@ const NavGroup: React.FC<{
   pathname: string;
   isFirstChild: boolean;
   isItemActive: (item: NavItem) => boolean;
-  classes?: ClassValue[];
-}> = ({ navGroup, isFirstChild, isItemActive, classes }) => {
+  className?: string;
+}> = ({ navGroup, isFirstChild, isItemActive, className }) => {
   return (
-    <div key={navGroup.id} className={clsx(classes)}>
+    <div key={navGroup.id} className={className}>
       {!isFirstChild ? <div className="divider" /> : null}
       <ul
         className={clsx("menu", [
@@ -137,10 +138,10 @@ const NavGroup: React.FC<{
 const NavItem: React.FC<{
   item: NavItem;
   active: boolean;
-  classes?: ClassValue[];
-}> = ({ item, active, classes }) => {
+  className?: string;
+}> = ({ item, active, className }) => {
   return (
-    <li key={item.link} className={clsx(classes)}>
+    <li key={item.link} className={className}>
       <Link to={item.link} className={active ? "active" : ""}>
         <span>{item.icon}</span>
         {item.text}
