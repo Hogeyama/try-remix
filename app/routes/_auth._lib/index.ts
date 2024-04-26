@@ -11,4 +11,3 @@ export const useUserSession = () => {
   invariant(userSession, "User session not found");
   return userSession;
 };
-
