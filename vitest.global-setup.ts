@@ -93,7 +93,6 @@ async function isPostgresReady(pcPort: number): Promise<boolean> {
       return true;
     }
   } catch (error) {
-    // ignore connection refused errors (server not ready yet)
     if (
       error instanceof Error &&
       typeof error.cause === "object" &&
@@ -101,6 +100,8 @@ async function isPostgresReady(pcPort: number): Promise<boolean> {
       "code" in error.cause &&
       error?.cause.code === "ECONNREFUSED"
     ) {
+      // ignore connection refused errors (server not ready yet)
+    } else {
       throw error;
     }
   }
