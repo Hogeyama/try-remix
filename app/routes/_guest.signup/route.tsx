@@ -15,6 +15,7 @@ import {
 import { Form, useActionData } from "@remix-run/react";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
+import { ClientOnly } from "remix-utils/client-only";
 import { z } from "zod";
 
 import { PasswordInput, UsernameInput } from "~/lib/auth/components";
@@ -86,35 +87,41 @@ export default function Page() {
   });
 
   return (
-    <div className="m-2">
-      <h1 className="text-xl font-bold">Signup</h1>
-      <div className="ml-3">
-        <Form method="post" {...getFormProps(form)}>
-          <UsernameInput
-            className="my-3"
-            inputAttrs={getInputProps(username, { type: "text" })}
-            error={username.errors?.join(",")}
-          />
-          <PasswordInput
-            className="my-3"
-            inputAttrs={getInputProps(password, { type: "password" })}
-            error={password.errors?.join(",")}
-          />
-          <div className="flex items-center my-3">
-            <button type="submit" className="btn mr-2">
-              CREATE ACCOUNT
-            </button>
-            <span className="text-error text-lg">{form.errors?.join(",")}</span>
+    <ClientOnly>
+      {() => (
+        <div className="m-2">
+          <h1 className="text-xl font-bold">Signup</h1>
+          <div className="ml-3">
+            <Form method="post" {...getFormProps(form)}>
+              <UsernameInput
+                className="my-3"
+                inputAttrs={getInputProps(username, { type: "text" })}
+                error={username.errors?.join(",")}
+              />
+              <PasswordInput
+                className="my-3"
+                inputAttrs={getInputProps(password, { type: "password" })}
+                error={password.errors?.join(",")}
+              />
+              <div className="flex items-center my-3">
+                <button type="submit" className="btn mr-2">
+                  CREATE ACCOUNT
+                </button>
+                <span className="text-error text-lg">
+                  {form.errors?.join(",")}
+                </span>
+              </div>
+              <div className="m-2">
+                Do you have an account?{" "}
+                <a href="/login" className="link">
+                  Login
+                </a>{" "}
+                here.
+              </div>
+            </Form>
           </div>
-          <div className="m-2">
-            Do you have an account?{" "}
-            <a href="/login" className="link">
-              Login
-            </a>{" "}
-            here.
-          </div>
-        </Form>
-      </div>
-    </div>
+        </div>
+      )}
+    </ClientOnly>
   );
 }
