@@ -1,7 +1,7 @@
 import { useRouteLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { loader } from "../_auth/route";
+import type { loader } from "../_auth/route";
 
 // 各loader, actionはどうせセッションを確認しないといけないので、
 // これを使う機会はほとんどないかもしれない。

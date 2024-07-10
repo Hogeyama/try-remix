@@ -25,11 +25,7 @@
     "zod": "^3.22.4"
   },
   "prettier": {},
-  "eslintIgnore": [
-    "/node_modules",
-    "/build",
-    "/public/build"
-  ],
+  "eslintIgnore": ["/node_modules", "/build", "/public/build"],
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@playwright/test": "1.40.0",
