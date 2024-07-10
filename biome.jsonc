@@ -22,14 +22,18 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "all": true,
+      "style": {
+        "noDefaultExport": "off",
+        "useNamingConvention": "off"
+      },
       "correctness": {
-        "noNewSymbol": "error",
-        "noUndeclaredVariables": "error",
-        "noUnusedVariables": "error",
-        "useIsNan": "error",
-        "useValidForDirection": "error",
-        "useYield": "error"
+        "noNodejsModules": "off"
+      },
+      "nursery": {
+        "noConsole": "error",
+        "noRestrictedImports": "error",
+        "useSortedClasses": "error"
       }
     }
   },
@@ -49,5 +53,21 @@
   },
   "json": { "parser": { "allowComments": true, "allowTrailingCommas": true } },
   "overrides": [
+    {
+      "include": ["./vitest.setup.ts", "./vitest.global-setup.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": "off"
+          },
+          "nursery": {
+            "noConsole": "off"
+          },
+          "suspicious": {
+            "noConsoleLog": "off"
+          }
+        }
+      }
+    }
   ]
 }
