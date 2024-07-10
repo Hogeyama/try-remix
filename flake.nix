@@ -50,19 +50,25 @@
               {
                 name = "format";
                 help = "Apply formatting";
-                command = ''yarn prettier --write . && prisma format'';
+                command = ''yarn biome format app tests ./*.{js,ts,json} --write && prisma format'';
                 category = "[development]";
               }
               {
                 name = "lint";
                 help = "Run lint";
-                command = ''yarn eslint --cache --cache-location ./node_modules/.cache/eslint .'';
+                command = ''yarn biome lint app tests ./*.{js,ts,json}'';
                 category = "[development]";
               }
               {
                 name = "lint-fix";
                 help = "Apply fix for `lint`";
-                command = ''yarn eslint --cache --cache-location ./node_modules/.cache/eslint . --fix'';
+                command = ''yarn biome lint app tests ./*.{js,ts,json} --write'';
+                category = "[development]";
+              }
+              {
+                name = "lint-unsafe-fix";
+                help = "Apply fix for `lint`";
+                command = ''yarn biome lint app tests ./*.{js,ts,json} --write --unsafe'';
                 category = "[development]";
               }
               {
