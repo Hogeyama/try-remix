@@ -4,7 +4,7 @@ import { createServer, type AddressInfo } from "node:net";
 export default async function () {
   const port = await getFreePort();
   const pc = await startProcessCompose(port);
-  return async () => {
+  return () => {
     shutdownProcessCompose(pc.process);
   };
 }
@@ -108,7 +108,7 @@ async function isPostgresReady(pcPort: number): Promise<boolean> {
   return false;
 }
 
-async function shutdownProcessCompose(pc: ChildProcessWithoutNullStreams) {
+function shutdownProcessCompose(pc: ChildProcessWithoutNullStreams) {
   if (pc.pid) {
     process.kill(-pc.pid, "SIGTERM");
   }

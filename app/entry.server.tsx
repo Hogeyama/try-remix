@@ -3,6 +3,7 @@ import { PassThrough } from "node:stream";
 import type { EntryContext } from "@remix-run/node";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
+// biome-ignore lint/style/noNamespaceImport:
 import * as isbotModule from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
@@ -91,6 +92,7 @@ function handleBotRequest(
           // errors encountered during initial shell rendering since they'll
           // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
+            // biome-ignore lint/nursery/noConsole:
             console.error(error);
           }
         },
@@ -142,6 +144,7 @@ function handleBrowserRequest(
           // errors encountered during initial shell rendering since they'll
           // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
+            // biome-ignore lint/nursery/noConsole:
             console.error(error);
           }
         },

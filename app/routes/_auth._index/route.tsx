@@ -14,7 +14,7 @@ export default function Index() {
   return (
     <div className="m-4">
       <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-        <h1 className="text-xl font-bold">Hello, {user.username}</h1>
+        <h1 className="font-bold text-xl">Hello, {user.username}</h1>
       </div>
     </div>
   );

@@ -54,6 +54,7 @@ export const getSession = async (
   if (
     process.env.NODE_ENV === "production" &&
     !hostHeader?.startsWith("localhost:") &&
+    // biome-ignore lint/complexity/useSimplifiedLogicExpression: 別にシンプルにならない
     (!originHeader ||
       !hostHeader ||
       !verifyRequestOrigin(originHeader, [hostHeader]))
@@ -71,10 +72,11 @@ export const getSession = async (
   }
 
   const result = await lucia.validateSession(sessionId);
-  if (result.session == null || result.user == null)
+  if (result.session == null || result.user == null) {
     return {
       error: "unauthorized",
     };
+  }
 
   const freshCookieIfNeeded = new Headers();
   if (result.session?.fresh) {

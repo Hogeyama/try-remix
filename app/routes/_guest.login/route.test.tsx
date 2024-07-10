@@ -17,7 +17,7 @@ describe("/login", () => {
       // act: nop
 
       // assert
-      await waitFor(async () => {
+      await waitFor(() => {
         expect(
           screen.getByLabelText("Username", { selector: "input" }),
         ).toBeVisible();

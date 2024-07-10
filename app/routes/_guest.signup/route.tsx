@@ -87,7 +87,7 @@ export default function Page() {
 
   return (
     <div className="m-2">
-      <h1 className="text-xl font-bold">Signup</h1>
+      <h1 className="font-bold text-xl">Signup</h1>
       <div className="ml-3">
         <Form method="post" {...getFormProps(form)}>
           <UsernameInput
@@ -100,7 +100,7 @@ export default function Page() {
             inputAttrs={getInputProps(password, { type: "password" })}
             error={password.errors?.join(",")}
           />
-          <div className="flex items-center my-3">
+          <div className="my-3 flex items-center">
             <button type="submit" className="btn mr-2">
               CREATE ACCOUNT
             </button>

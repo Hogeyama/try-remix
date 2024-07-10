@@ -32,7 +32,7 @@ export default function Page() {
   return (
     <div>
       <AppBar user={user} className={clsx(["z-10", ["h-16", "lg:h-20"]])} />
-      <div className="absolute flex flex-row w-full">
+      <div className="absolute flex w-full flex-row">
         <NavBar
           navGroups={navGroups}
           className={clsx(["relative", ["pt-16", "lg:pt-20"]])}
@@ -55,7 +55,7 @@ const AppBar = ({ user, className }: { user: User; className?: string }) => (
     </Link>
     <div className="flex-grow" />
     <div className="flex-initial text-nowrap text-neutral-content">
-      <UserIcon title="user" className="w-6 h-6" />
+      <UserIcon title="user" className="h-6 w-6" />
       {user.username}
     </div>
   </div>
@@ -110,7 +110,7 @@ const NavGroup: React.FC<{
 }> = ({ navGroup, isFirstChild, isItemActive, className }) => {
   return (
     <div key={navGroup.id} className={className}>
-      {!isFirstChild ? <div className="divider" /> : null}
+      {isFirstChild ? null : <div className="divider" />}
       <ul
         className={clsx("menu", [
           "menu-sm",

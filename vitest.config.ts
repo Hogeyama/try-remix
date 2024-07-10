@@ -1,8 +1,7 @@
-import * as path from "node:path";
+import { resolve } from "node:path";
+import { defineConfig } from "vitest/config";
 
-import * as VitestConfig from "vitest/config";
-
-export default VitestConfig.defineConfig({
+export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
@@ -12,7 +11,7 @@ export default VitestConfig.defineConfig({
   },
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "app"),
+      "~": resolve(__dirname, "app"),
     },
   },
 });

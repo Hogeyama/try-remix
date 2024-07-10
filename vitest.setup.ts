@@ -1,5 +1,6 @@
 import { execSync } from "node:child_process";
 
+// biome-ignore lint/style/noNamespaceImport:
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { beforeEach, expect } from "vitest";
 expect.extend(matchers);

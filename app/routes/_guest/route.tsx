@@ -25,7 +25,7 @@ export default function Mui() {
 const AppBar = ({ classes }: { classes?: ClassValue[] }) => (
   <div
     className={clsx(
-      "navbar absolute top-0 bg-neutral text-neutral-content shadow-md py-0",
+      "navbar absolute top-0 bg-neutral py-0 text-neutral-content shadow-md",
       classes,
     )}
   >
