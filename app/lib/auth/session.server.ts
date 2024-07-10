@@ -88,7 +88,6 @@ export const getSession = async (
 export const getSessionOrRedirect = async (
   request: Request,
 ): Promise<{ user: User; session: Session }> => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, result] = await getSessionOrRedirectForAction(request);
   return result;
 };
