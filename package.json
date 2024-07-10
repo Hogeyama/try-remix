@@ -31,6 +31,7 @@
     "/public/build"
   ],
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@playwright/test": "1.40.0",
     "@remix-run/dev": "^2.8.1",
     "@remix-run/testing": "^2.8.1",
