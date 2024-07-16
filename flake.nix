@@ -145,7 +145,7 @@
               }
               {
                 name = "DATABASE_URL";
-                value = "postgresql://postgres@localhost:5432/app-db";
+                value = "postgresql://postgres@localhost:5432";
               }
             ];
           };
