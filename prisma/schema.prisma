@@ -7,16 +7,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
+// Requred by Lucia
+model user {
   id              String    @id
   username        String    @unique
-  sessions        Session[]
+  sessions        session[]
   hashed_password String
 }
 
-model Session {
+// Requred by Lucia
+model session {
   id        String   @id
-  userId    String
-  expiresAt DateTime
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId    String        // camelCase required
+  expiresAt DateTime      // camelCase required
+  user      user     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
