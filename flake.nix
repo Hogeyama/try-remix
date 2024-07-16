@@ -96,6 +96,12 @@
                 category = "[development]";
               }
               {
+                name = "psql-json";
+                help = "Query postgres as json";
+                command = ''psql -At "$DATABASE_URL" -c "SELECT to_json(_json) FROM ($*) _json" | jq'';
+                category = "[development]";
+              }
+              {
                 name = "build";
                 help = "Build for production";
                 command = ''yarn remix vite:build'';
