@@ -51,16 +51,17 @@ export const action = async ({
       },
     });
   } catch (err) {
-    if (err instanceof Prisma.PrismaClientKnownRequestError) {
-      if (err.code === "P2002") {
-        return json(
-          submission.reply({
-            fieldErrors: {
-              username: ["Username already exists"],
-            },
-          }),
-        );
-      }
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
+      return json(
+        submission.reply({
+          fieldErrors: {
+            username: ["Username already exists"],
+          },
+        }),
+      );
     }
     throw err;
   }
